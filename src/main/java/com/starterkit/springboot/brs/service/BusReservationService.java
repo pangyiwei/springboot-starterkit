@@ -40,4 +40,5 @@ public interface BusReservationService {
     //Ticket related method
     TicketDto bookTicket(TripScheduleDto tripScheduleDto, UserDto passenger);
 
+    List<TicketDto> getTickets(UserDto user);
 }

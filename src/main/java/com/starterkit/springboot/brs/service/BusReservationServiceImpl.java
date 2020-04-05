@@ -353,6 +353,20 @@ public class BusReservationServiceImpl implements BusReservationService {
         throw exception(USER, ENTITY_NOT_FOUND, userDto.getEmail());
     }
 
+    @Override
+    public List<TicketDto> getTickets(UserDto userDto) {
+        User user = getUser(userDto.getEmail());
+        if (user != null) {
+            List<Ticket> tickets = ticketRepository.findByPassenger(user);
+            List<TicketDto> ticketsDto = new ArrayList<TicketDto>();
+            for(Ticket ticket : tickets) {
+                ticketsDto.add(TicketMapper.toTicketDto(ticket));
+            }
+            return ticketsDto;
+        }
+        throw exception(USER, ENTITY_NOT_FOUND, userDto.getEmail());
+    }
+
     /**
      * Search for all Trips between src and dest stops
      *

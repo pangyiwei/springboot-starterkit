@@ -39,6 +39,7 @@ public class ApiJWTAuthenticationFilter extends UsernamePasswordAuthenticationFi
                                                 HttpServletResponse res) throws AuthenticationException {
         try {
             User user = new ObjectMapper().readValue(req.getInputStream(), User.class);
+            System.out.println(user.getEmail() + " " + user.getPassword());
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             user.getEmail(),

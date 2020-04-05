@@ -26,6 +26,7 @@ import java.util.Optional;
  * Created by Arpit Khandelwal.
  */
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/reservation")
 @Api(value = "brs-application", description = "Operations pertaining to agency management and ticket issue in the BRS application")
 public class BusReservationController {
@@ -43,7 +44,7 @@ public class BusReservationController {
                 .setPayload(busReservationService.getAllStops());
     }
 
-    @GetMapping("/tripsbystops")
+    @PostMapping("/tripsbystops")
     @ApiOperation(value = "", authorizations = {@Authorization(value = "apiKey")})
     public Response getTripsByStops(@RequestBody @Valid GetTripSchedulesRequest getTripSchedulesRequest) {
         List<TripDto> tripDtos = busReservationService.getAvailableTripsBetweenStops(
@@ -56,7 +57,7 @@ public class BusReservationController {
                 .setErrors(String.format("No trips between source stop - '%s' and destination stop - '%s' are available at this time.", getTripSchedulesRequest.getSourceStop(), getTripSchedulesRequest.getDestinationStop()));
     }
 
-    @GetMapping("/tripschedules")
+    @PostMapping("/tripschedules")
     @ApiOperation(value = "", authorizations = {@Authorization(value = "apiKey")})
     public Response getTripSchedules(@RequestBody @Valid GetTripSchedulesRequest getTripSchedulesRequest) {
         List<TripScheduleDto> tripScheduleDtos = busReservationService.getAvailableTripSchedules(
@@ -92,5 +93,21 @@ public class BusReservationController {
             }
         }
         return Response.badRequest().setErrors("Unable to process ticket booking.");
+    }
+
+    @GetMapping("/tickets")
+    @ApiOperation(value = "", authorizations = {@Authorization(value = "apiKey")})
+    public Response getTickets() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = (String) auth.getPrincipal();
+        Optional<UserDto> userDto = Optional.ofNullable(userService.findUserByEmail(email));
+        if (userDto.isPresent()) {
+            Optional<List<TicketDto>> tickets = Optional
+                .ofNullable(busReservationService.getTickets(userDto.get()));
+            if (tickets.isPresent()) {
+                return Response.ok().setPayload(tickets.get());
+            }
+        }
+        return Response.badRequest().setErrors("Unable to retrieve tickets");
     }
 }

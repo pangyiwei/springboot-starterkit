@@ -15,6 +15,7 @@ import javax.validation.Valid;
 /**
  * Created by Arpit Khandelwal.
  */
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/v1/user")
 @Api(value="brs-application", description="Operations pertaining to user management in the BRS application")
