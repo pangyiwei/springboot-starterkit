@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -66,23 +67,6 @@ public class MultiHttpSecurityConfig {
             return source;
         }
 
-        // @Bean
-        // CorsFilter corsFilter() {
-        //     final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        //     final CorsConfiguration config = new CorsConfiguration();
-
-        //     config.addAllowedOrigin("*");
-        //     config.addAllowedHeader("*");
-        //     config.addAllowedHeader("Authorization");
-        //     config.addAllowedMethod("GET");
-        //     config.addAllowedMethod("PUT");
-        //     config.addAllowedMethod("POST");
-        //     source.registerCorsConfiguration("/**", config);
-
-        //     CorsFilter filter = new CorsFilter(source);
-        //     return filter;
-        // }
-
         // @formatter:off
         protected void configure(HttpSecurity http) throws Exception {
             http
@@ -133,6 +117,7 @@ public class MultiHttpSecurityConfig {
                     .csrf()
                         .disable()
                     .authorizeRequests()
+                        .antMatchers("/app").permitAll()
                         .antMatchers("/").permitAll()
                         .antMatchers("/login").permitAll()
                         .antMatchers("/signup").permitAll()
@@ -166,7 +151,7 @@ public class MultiHttpSecurityConfig {
                     "/images/**", "/scss/**", "/vendor/**", "/favicon.ico", "/auth/**", "/favicon.png",
                     "/v2/api-docs", "/configuration/ui", "/configuration/security", "/swagger-ui.html",
                     "/webjars/**", "/swagger-resources/**", "/swagge‌​r-ui.html", "/actuator",
-                    "/actuator/**");
+                    "/actuator/**", "/app/**");
         }
         // @formatter:on
     }
