@@ -5,30 +5,30 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(value = {"/app"})
+// @RequestMapping(value = {"/app"})
 public class AppController {
     
-    @GetMapping(value = "/")
+    @GetMapping(value = "/app")
     public String app() {
         return "app";
     }
 
-    @GetMapping(value = "/signup")
+    @GetMapping(value = "/app/signup")
     public String signup() {
         return "app";
     }
 
-    @GetMapping(value = "/login")
+    @GetMapping(value = "/app/login")
     public String login() {
         return "app";
     }
 
-    @GetMapping(value = "/booking")
+    @GetMapping(value = "/app/booking")
     public String booking() {
         return "app";
     }
 
-    @GetMapping(value = "/schedule")
+    @GetMapping(value = "/app/schedule")
     public String schedule() {
         return "app";
     }
